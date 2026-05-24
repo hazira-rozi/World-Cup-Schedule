@@ -1,92 +1,179 @@
-/* EXTENSION UNTUK BASE BOOTSTRAP */
-.bg-dark-core { background-color: #0d1117; }
-.bg-card { background-color: rgba(22, 27, 34, 0.5); }
-.fw-black { font-weight: 800; }
-.tracking-wider { letter-spacing: 1.5px; }
+const DATA_URL = "https://raw.githubusercontent.com/openfootball/world-cup/master/2026/cup.json";
 
-/* Ukuran Proporsional Poster A3 */
-.poster-container {
-    max-width: 1191px; 
-    margin: 0 auto;
-    background: #0d1117;
-    border: 2px solid #30363d;
-}
+const dataLokalGrup = {
+    'A': ['Meksiko', 'Afrika Selatan', 'Korea Selatan', 'Ceko'],
+    'B': ['Kanada', 'Bosnia & Herz.', 'Qatar', 'Swiss'],
+    'C': ['Brasil', 'Maroko', 'Swedia', 'Jamaika'],
+    'D': ['Amerika Serikat', 'Paraguay', 'Ghana', 'Aljazair'],
+    'E': ['Argentina', 'Arab Saudi', 'Irlandia', 'Australia'],
+    'F': ['Prancis', 'Jepang', 'Kamerun', 'Ekuador'],
+    'G': ['Jerman', 'Iran', 'Kosta Rika', 'Skotlandia'],
+    'H': ['Spanyol', 'Tunisia', 'Cile', 'Selandia Baru'],
+    'I': ['Inggris', 'Nigeria', 'Peru', 'Uzbekistan'],
+    'J': ['Italia', 'Mesir', 'Kolombia', 'Kanada'],
+    'K': ['Belgia', 'Uruguay', 'Senegal', 'Oman'],
+    'L': ['Portugal', 'Kroasia', 'Maroko', 'Honduras']
+};
 
-/* HEADER BANNER DESIGN */
-.header-banner {
-    background: linear-gradient(90deg, #161b22 0%, #21262d 100%);
-    border: 1px solid #30363d;
-}
+let listSemuaPertandingan = [];
 
-.player-visual {
-    width: 80px;
-    height: 80px;
-    background-size: cover;
-    background-position: center;
-}
-
-.mbappe { background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=150&q=80'); }
-.haaland { background-image: url('https://images.unsplash.com/photo-1544698310-74ea9d1c8258?auto=format&fit=crop&w=150&q=80'); }
-
-.title-area h1 { font-size: 24px; }
-
-/* FORMULIR PERTANDINGAN */
-.match-row {
-    border-bottom: 1px solid #21262d;
-    font-size: 11px;
-}
-
-.match-time { width: 105px; color: #8b949e; font-size: 10px; }
-.match-team { width: 90px; font-weight: 600; }
-.match-score-input { width: 32px; }
-
-.match-score-input input {
-    background: #0d1117;
-    border: 1px solid #30363d;
-    color: #fff;
-    padding: 1px 0;
-}
-
-/* BADGE BROADCAST (VERSI INTERNASIONAL / NETRAL) */
-.badge-simulcast { background-color: #ea6060; color: #fff; }
-.badge-tv-a { background-color: #58a6ff; color: #fff; }
-.badge-tv-b { background-color: #3fb950; color: #fff; }
-
-/* RE-STYLING TABEL KLASEMEN MINI */
-.mini-table th { background-color: #161b22 !important; color: #8b949e !important; font-size: 10px; }
-.mini-table td { font-size: 11px; border-bottom: 1px solid #21262d; }
-
-/* TRANSISI ANIMASI */
-.transition-all { transition: all 0.5s ease-in-out; }
-.fase-gugur-active {
-    border: 2px solid #f0883e;
-    box-shadow: 0 0 20px rgba(240, 136, 62, 0.2);
-    background: #1c1612 !important;
-}
-
-/* KETENTUAN CETAK PDF A3 LANDSCAPE */
-@media print {
-    body { background: #fff !important; color: #000 !important; padding: 0; }
-    .action-bar { display: none !important; }
-    
-    .poster-container {
-        width: 420mm; 
-        max-width: 100%;
-        border: none;
-        background: #fff !important;
-        color: #000 !important;
-        padding: 0 !important;
+async function muatDataJadwal() {
+    try {
+        const response = await fetch(DATA_URL);
+        if (!response.ok) throw new Error("API Offline");
+        const data = await response.json();
+        renderJadwal(data.groups);
+    } catch (error) {
+        console.log("Mengaktifkan mode data lokal:", error.message);
+        renderJadwalDariLokal();
     }
-    
-    .header-banner { background: #f6f8fa !important; border: 1px solid #000; }
-    .title-area h1 { color: #000 !important; }
-    .title-area p { color: #57606a !important; }
-    
-    .card { background: #fff !important; border: 1px solid #000 !important; page-break-inside: avoid; }
-    .card-header { background: #f6f8fa !important; color: #000 !important; border-bottom: 1px solid #000 !important; }
-    
-    .match-score-input input { background: #fff !important; color: #000 !important; border: 1px solid #000; }
-    .badge { border: 1px solid #000; color: #000 !important; background: transparent !important; }
-    .mini-table th { background: #f6f8fa !important; color: #000 !important; }
-    .match-time { color: #24292f !important; }
 }
+
+function renderJadwal(groupsFromApi) {
+    const container = document.getElementById('fase-grup-container');
+    container.innerHTML = "";
+    let globalCounter = 1;
+
+    groupsFromApi.forEach((g) => {
+        const hurufGrup = g.name.replace("Group ", "");
+        const daftarTim = g.teams;
+        
+        let htmlGrup = buatKotakGrupHeader(g.name, hurufGrup);
+
+        g.matches.forEach((m) => {
+            const jamWib = tentukanJamWib(globalCounter);
+            const badgeTvri = dapatkanBadgeTvri(jamWib, globalCounter);
+            
+            htmlGrup += buatBarisPertandinganHTML(globalCounter, m.date, jamWib, m.team1, m.team2, hurufGrup, badgeTvri);
+            
+            listSemuaPertandingan.push({ id: globalCounter, team1: m.team1, team2: m.team2, grup: hurufGrup });
+            globalCounter++;
+        });
+
+        htmlGrup += buatTabelKlasemenFooter(hurufGrup, daftarTim.map(t => t.name || t));
+        container.innerHTML += htmlGrup;
+    });
+}
+
+function tentukanJamWib(id) {
+    const listJam = ["02:00", "05:00", "08:00", "21:00", "23:30"];
+    return listJam[id % listJam.length];
+}
+
+function dapatkanBadgeTvri(jam, index) {
+    if (jam === "02:00" || jam === "05:00") {
+        return `<span class="badge badge-simulcast align-self-center ms-auto">Simulcast</span>`;
+    }
+    return index % 2 === 0 
+        ? `<span class="badge badge-tv-a align-self-center ms-auto">TV Live A</span>` 
+        : `<span class="badge badge-tv-b align-self-center ms-auto">TV Live B</span>`;
+}
+
+function buatKotakGrupHeader(namaGrup, huruf) {
+    return `
+        <div class="col-md-6">
+            <div class="card bg-dark bg-opacity-10 border-secondary h-100 shadow-sm">
+                <div class="card-header bg-dark bg-opacity-30 border-secondary d-flex justify-content-between py-2">
+                    <span class="fw-bold text-warning small">${namaGrup.toUpperCase()}</span>
+                    <span class="badge bg-secondary text-uppercase align-self-center" style="font-size:9px">Pool</span>
+                </div>
+                <div class="card-body p-2 d-flex flex-column justify-content-between">
+                    <div>`;
+}
+
+function buatBarisPertandinganHTML(id, tgl, jam, t1, t2, grup, badge) {
+    return `
+        <div class="d-flex align-items-center py-1 match-row">
+            <div class="match-time text-truncate">${tgl} - ${jam}</div>
+            <div class="match-team text-end text-truncate">${t1}</div>
+            <div class="match-score-input mx-1"><input type="number" min="0" class="form-control form-control-sm text-center p-0 rounded shadow-sm text-white" id="m-${id}-a" oninput="hitungPoinGrup('${grup}')"></div>
+            <div class="text-muted small px-1">vs</div>
+            <div class="match-score-input mx-1"><input type="number" min="0" class="form-control form-control-sm text-center p-0 rounded shadow-sm text-white" id="m-${id}-b" oninput="hitungPoinGrup('${grup}')"></div>
+            <div class="match-team text-start text-truncate">${t2}</div>
+            ${badge}
+        </div>`;
+}
+
+function buatTabelKlasemenFooter(grup, tims) {
+    let footer = `
+                    </div>
+                    <table class="table table-dark table-striped table-sm mini-table m-0 mt-3 border-secondary">
+                        <thead>
+                            <tr>
+                                <th class="border-secondary py-1 ps-2">Team</th>
+                                <th class="border-secondary text-center py-1 text-warning" style="width:75px">Pts</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+    tims.forEach(tim => {
+        footer += `
+                            <tr>
+                                <td class="ps-2 align-middle">${tim}</td>
+                                <td class="text-center align-middle fw-bold text-warning" id="pts-${tim.replace(/\s+/g, '')}">0</td>
+                            </tr>`;
+    });
+    footer += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>`;
+    return footer;
+}
+
+function hitungPoinGrup(grup) {
+    let pointMap = {};
+
+    listSemuaPertandingan.forEach((match) => {
+        if (match.grup !== grup) return;
+
+        const val1 = parseInt(document.getElementById(`m-${match.id}-a`).value);
+        const val2 = parseInt(document.getElementById(`m-${match.id}-b`).value);
+
+        if (!pointMap[match.team1]) pointMap[match.team1] = 0;
+        if (!pointMap[match.team2]) pointMap[match.team2] = 0;
+
+        if (!isNaN(val1) && !isNaN(val2)) {
+            if (val1 > val2) pointMap[match.team1] += 3;
+            else if (val1 < val2) pointMap[match.team2] += 3;
+            else { pointMap[match.team1] += 1; pointMap[match.team2] += 1; }
+        }
+    });
+
+    for (let tim in pointMap) {
+        const targetId = `pts-${tim.replace(/\s+/g, '')}`;
+        const cell = document.getElementById(targetId);
+        if (cell) cell.innerText = pointMap[tim];
+    }
+}
+
+function cekStatusFaseTurnamen() {
+    const waktuSekarang = new Date();
+    const batasFaseGrup = new Date("2026-06-27T23:59:59");
+    const sectionGugur = document.getElementById('fase-gugur-section');
+    
+    if (sectionGugur && waktuSekarang > batasFaseGrup) {
+        sectionGugur.classList.add('fase-gugur-active');
+        setTimeout(() => {
+            sectionGugur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1000);
+    }
+}
+
+function renderJadwalDariLokal() {
+    const dataTransform = Object.keys(dataLokalGrup).map(grupLetter => ({
+        name: `Group ${grupLetter}`,
+        teams: dataLokalGrup[grupLetter],
+        matches: [
+            { team1: dataLokalGrup[grupLetter][0], team2: dataLokalGrup[grupLetter][1], date: "12 Juni 2026" },
+            { team1: dataLokalGrup[grupLetter][2], team2: dataLokalGrup[grupLetter][3], date: "13 Juni 2026" }
+        ]
+    }));
+    renderJadwal(dataTransform);
+}
+
+window.onload = function() {
+    muatDataJadwal().then(() => {
+        setTimeout(cekStatusFaseTurnamen, 1500);
+    });
+};
