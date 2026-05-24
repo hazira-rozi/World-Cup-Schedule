@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poster Jadwal Resmi & Kontrol Piala Dunia 2026 - TVRI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Tombol Aksi di Web (Otomatis Tersembunyi Saat Dicetak) -->
+    <div class="action-bar">
+        <button class="btn" onclick="window.print()">Simpan / Cetak Sebagai PDF (Ukuran A3)</button>
+    </div>
+
+    <!-- Container Utama Dimensi Poster A3 -->
+    <div class="poster-container">
+        
+        <!-- Header Banner dengan Megabintang & Logo TVRI -->
+        <div class="header-banner">
+            <div class="player-visual mbappe"></div>
+            <div class="title-area">
+                <h1>JADWAL RESMI & LEMBAR KONTROL PIALA DUNIA 2026</h1>
+                <h2>OFFICIAL BROADCASTER: TVRI NASIONAL & TVRI SPORT | ZONA WAKTU: WIB</h2>
+            </div>
+            <div class="logo-tvri">TVRI</div>
+            <div class="player-visual haaland"></div>
+        </div>
+
+        <!-- Konten Grid 12 Grup yang diisi otomatis oleh JS -->
+        <div class="grid-fase" id="fase-grup-container">
+            <!-- Status Loading awal sebelum data internet masuk -->
+            <div class="loading-status">Menghubungkan ke server untuk memuat jadwal resmi...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
