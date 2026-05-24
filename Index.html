@@ -4,36 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poster Jadwal Resmi & Kontrol Piala Dunia 2026 - TVRI</title>
+    <!-- Bootstrap 5 CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Kustom CSS Terpisah -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-dark-core text-white py-4">
 
-    <!-- Tombol Aksi di Web (Otomatis Tersembunyi Saat Dicetak) -->
-    <div class="action-bar">
-        <button class="btn" onclick="window.print()">Simpan / Cetak Sebagai PDF (Ukuran A3)</button>
+    <!-- Tombol Aksi Web (Otomatis Tersembunyi Saat Dicetak) -->
+    <div class="container d-flex justify-content-center mb-4 action-bar">
+        <button class="btn btn-primary btn-lg px-4 fw-bold shadow" onclick="window.print()">
+            Simpan / Cetak Sebagai PDF (Ukuran A3)
+        </button>
     </div>
 
     <!-- Container Utama Dimensi Poster A3 -->
-    <div class="poster-container">
+    <div class="container-fluid poster-container shadow-lg p-4 rounded">
         
         <!-- Header Banner dengan Megabintang & Logo TVRI -->
-        <div class="header-banner">
-            <div class="player-visual mbappe"></div>
-            <div class="title-area">
-                <h1>JADWAL RESMI & LEMBAR KONTROL PIALA DUNIA 2026</h1>
-                <h2>OFFICIAL BROADCASTER: TVRI NASIONAL & TVRI SPORT | ZONA WAKTU: WIB</h2>
+        <div class="row align-items-center header-banner p-3 mb-4 mx-1 rounded-3">
+            <div class="col-auto d-none d-md-block">
+                <div class="player-visual mbappe rounded border border-warning shadow"></div>
             </div>
-            <div class="logo-tvri">TVRI</div>
-            <div class="player-visual haaland"></div>
+            <div class="col text-center title-area">
+                <h1 class="fw-black text-warning m-0 text-uppercase tracking-wider">JADWAL RESMI & LEMBAR KONTROL PIALA DUNIA 2026</h1>
+                <p class="text-info small fw-semibold m-0 mt-2">OFFICIAL BROADCASTER: TVRI NASIONAL & TVRI SPORT | ZONA WAKTU: WIB</p>
+            </div>
+            <div class="col-auto text-end d-flex align-items-center gap-3">
+                <div class="logo-tvri px-3 py-2 rounded fw-black shadow text-white bg-tvri">TVRI</div>
+                <div class="player-visual haaland rounded border border-warning shadow d-none d-md-block"></div>
+            </div>
         </div>
 
-        <!-- Konten Grid 12 Grup yang diisi otomatis oleh JS -->
-        <div class="grid-fase" id="fase-grup-container">
+        <!-- Konten Grid 12 Grup Bootstrap Row -->
+        <div class="row g-3" id="fase-grup-container">
             <!-- Status Loading awal sebelum data internet masuk -->
-            <div class="loading-status">Menghubungkan ke server untuk memuat jadwal resmi...</div>
+            <div class="col-12 text-center py-5 text-muted loading-status">
+                <div class="spinner-border text-info mb-2" role="status"></div>
+                <div>Menghubungkan ke server untuk memuat jadwal resmi...</div>
+            </div>
         </div>
     </div>
 
+    <!-- Bootstrap 5 Bundle JS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript Kustom Eksternal -->
     <script src="script.js"></script>
 </body>
 </html>
