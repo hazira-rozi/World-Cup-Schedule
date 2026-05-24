@@ -3,66 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Cup 2026 - Fan Tracker Poster</title>
-    <!-- Bootstrap 5 CSS via CDN -->
+    <title>World Cup 2026 - Fan Made Tracker Poster</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Kustom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-dark-core text-white py-3">
 
-    <!-- Tombol Cetak (Otomatis Tersembunyi Saat Cetak/PDF) -->
     <div class="container d-flex justify-content-center mb-3 action-bar">
         <button class="btn btn-warning fw-bold px-4 shadow" onclick="window.print()">
             Cetak Poster A3 / Simpan PDF
         </button>
     </div>
 
-    <!-- Container Utama Dimensi Poster A3 -->
-    <div class="container-fluid poster-container p-3 rounded shadow-lg">
+    <div class="container-fluid poster-container p-3 rounded">
         
-        <!-- Header Banner -->
         <div class="row align-items-center header-banner p-3 mb-3 mx-0 rounded">
             <div class="col-auto d-none d-lg-block">
-                <div class="player-visual mbappe rounded border border-warning shadow-sm"></div>
+                <div class="player-visual mbappe rounded border border-warning"></div>
             </div>
             <div class="col text-center">
-                <span class="badge bg-warning text-dark fw-bold mb-1 px-2 py-0.5 text-uppercase" style="font-size: 10px;">Fan-Made Tracker</span>
-                <h1 class="fw-black m-0 tracking-wider">JADWAL & LEMBAR KONTROL PIALA DUNIA 2026</h1>
-                <p class="text-info small m-0 mt-1" style="font-size: 11px;">ZONASI WAKTU: WIB | OFFICIAL TVRI BROADCAST CHANNELS</p>
+                <span class="badge bg-warning text-dark fw-bold mb-1 px-2 py-0.5 text-uppercase" style="font-size: 10px;">Fan-Made Tournament Tracker</span>
+                <h1 class="fw-black m-0 tracking-wider text-white text-uppercase" style="font-size: 22px;">Jadwal Resmi & Lembar Kontrol Piala Dunia 2026</h1>
+                <p class="text-info small m-0 mt-1" style="font-size: 11px;">FORMAT WAKTU: WIB | PENYIARAN: TVRI NASIONAL & TVRI SPORT</p>
             </div>
             <div class="col-auto d-none d-lg-block">
-                <div class="player-visual haaland rounded border border-warning shadow-sm"></div>
+                <div class="player-visual haaland rounded border border-warning"></div>
             </div>
         </div>
 
-        <!-- FASE GRUP CONTAINER (12 GRUP - OTOMATIS VIA SCRIPT) -->
-        <div class="row g-2 row-cols-1 row-cols-xxl-2" id="fase-grup-container">
+        <div class="row g-3" id="fase-grup-container">
             <div class="col-12 text-center py-4 text-muted">
                 <div class="spinner-border spinner-border-sm text-warning me-2" role="status"></div>
-                <span>Mengambil susunan jadwal grup dari internet...</span>
+                <span>Menghubungkan ke server data sepak bola...</span>
             </div>
         </div>
 
-        <!-- SEPARATOR FASE GUGUR -->
         <div class="row my-4 align-items-center mx-0">
             <div class="col"><hr class="border-secondary opacity-50"></div>
-            <div class="col-auto text-uppercase fw-bold text-warning tracking-wider" style="font-size: 12px;">Bagan Fase Gugur (Knockout Stage)</div>
+            <div class="col-auto text-uppercase fw-bold text-warning tracking-wider" style="font-size: 13px;">Bagan Fase Gugur (Knockout Stage Arena)</div>
             <div class="col"><hr class="border-secondary opacity-50"></div>
         </div>
 
-        <!-- FASE GUGUR CONTAINER (LENGKAP SAMPAI FINAL) -->
         <div id="fase-gugur-section" class="p-2 rounded transition-all">
             <div class="row g-2 justify-content-center" id="fase-gugur-container">
-                <!-- Data Fase Gugur di-render secara komplit oleh Javascript -->
-            </div>
+                </div>
         </div>
 
     </div>
 
-    <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- JavaScript Kustom -->
     <script src="script.js"></script>
 </body>
 </html>
