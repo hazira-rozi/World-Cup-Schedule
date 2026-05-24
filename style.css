@@ -1,0 +1,87 @@
+/* EXTENSION UNTUK BASE BOOTSTRAP */
+.bg-dark-core { background-color: #0b111e; }
+.bg-tvri { background-color: #003399; }
+.fw-black { font-weight: 900; }
+.tracking-wider { letter-spacing: 2px; }
+
+/* Ukuran Proporsional Poster A3 di Web Browser */
+.poster-container {
+    max-width: 1191px; 
+    margin: 0 auto;
+    background: linear-gradient(135deg, #0f1c3f 0%, #080c18 100%);
+    border: 3px solid #1e3a8a;
+}
+
+/* HEADER BANNER */
+.header-banner {
+    background: rgba(30, 58, 138, 0.3);
+    border: 1px solid #2563eb;
+}
+
+.player-visual {
+    width: 140px;
+    height: 95px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Gambar Aksi Bintang Utama */
+.mbappe { background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=300&q=80'); }
+.haaland { background-image: url('https://images.unsplash.com/photo-1544698310-74ea9d1c8258?auto=format&fit=crop&w=300&q=80'); }
+
+.title-area h1 { font-size: 22px; }
+.logo-tvri { font-size: 24px; letter-spacing: 1px; }
+
+/* FORMULIR JADWAL BARISAN PERTANDINGAN */
+.match-row {
+    border-bottom: 1px solid #1e293b;
+    font-size: 11px;
+}
+
+.match-time { width: 110px; color: #94a3b8; font-size: 10px; }
+.match-team { width: 90px; font-weight: bold; }
+.match-score-input { width: 32px; font-weight: bold; }
+
+.match-score-input input {
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: #fff;
+    padding: 1px 0;
+}
+
+/* BADGE STATUS TVRI DENGAN SISTEM WARNA BOOTSTRAP */
+.badge-simulcast { background-color: #dc2626; color: white; }
+.badge-nasional { background-color: #16a34a; color: white; }
+.badge-sport { background-color: #2563eb; color: white; }
+
+/* RE-STYLING MINI TABLE BOOTSTRAP */
+.mini-table th { background-color: #0f172a !important; color: #94a3b8 !important; font-size: 10px; }
+.mini-table td { font-size: 11px; border-bottom: 1px solid #1e293b; }
+
+/* PROFILE CETAK PDF KERTAS A3 (LANDSCAPE) */
+@media print {
+    body { background: #fff !important; color: #000 !important; padding: 0; }
+    .action-bar { display: none !important; }
+    
+    .poster-container {
+        width: 420mm; /* Lebar Mutlak A3 Landscape */
+        max-width: 100%;
+        border: none;
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+    }
+    
+    .header-banner { background: #f1f5f9 !important; border: 2px solid #000; }
+    .title-area h1 { color: #000 !important; }
+    .title-area p { color: #334155 !important; }
+    .logo-tvri { background: #000 !important; border: 1px solid #000; }
+    
+    .card { background: #fff !important; border: 1px solid #000 !important; page-break-inside: avoid; }
+    .card-header { background: #e2e8f0 !important; color: #000 !important; border-bottom: 1px solid #000 !important; }
+    
+    .match-score-input input { background: #fff !important; color: #000 !important; border: 1px solid #000; }
+    .badge { border: 1px solid #000; color: #000 !important; background: transparent !important; }
+    .mini-table th { background: #e2e8f0 !important; color: #000 !important; }
+    .match-time { color: #334155 !important; }
+}
