@@ -1,165 +1,91 @@
-const DATA_URL = "https://raw.githubusercontent.com/openfootball/world-cup/master/2026/cup.json";
+/* EXTENSION BASE UTILITIES */
+.bg-dark-core { background-color: #0b0f17; }
+.fw-black { font-weight: 900; }
+.tracking-wider { letter-spacing: 1.5px; }
 
-const dataLokalGrup = {
-    'A': ['Meksiko', 'Afrika Selatan', 'Korea Selatan', 'Ceko'],
-    'B': ['Kanada', 'Bosnia & Herz.', 'Qatar', 'Swiss'],
-    'C': ['Brasil', 'Maroko', 'Swedia', 'Jamaika'],
-    'D': ['Amerika Serikat', 'Paraguay', 'Ghana', 'Aljazair'],
-    'E': ['Argentina', 'Arab Saudi', 'Irlandia', 'Australia'],
-    'F': ['Prancis', 'Jepang', 'Kamerun', 'Ekuador'],
-    'G': ['Jerman', 'Iran', 'Kosta Rika', 'Skotlandia'],
-    'H': ['Spanyol', 'Tunisia', 'Cile', 'Selandia Baru'],
-    'I': ['Inggris', 'Nigeria', 'Peru', 'Uzbekistan'],
-    'J': ['Italia', 'Mesir', 'Kolombia', 'Kanada'],
-    'K': ['Belgia', 'Uruguay', 'Senegal', 'Oman'],
-    'L': ['Portugal', 'Kroasia', 'Maroko', 'Honduras']
-};
-
-let listSemuaPertandingan = [];
-
-async function muatDataJadwal() {
-    try {
-        const response = await fetch(DATA_URL);
-        if (!response.ok) throw new Error("API Offline");
-        const data = await response.json();
-        renderJadwal(data.groups);
-    } catch (error) {
-        console.log("Mengaktifkan mode data lokal:", error.message);
-        renderJadwalDariLokal();
-    }
+/* Pembatas Skala Poster A3 */
+.poster-container {
+    max-width: 1280px; 
+    margin: 0 auto;
+    background: #0f1420;
+    border: 2px solid #1e293b;
 }
 
-function renderJadwal(groupsFromApi) {
-    const container = document.getElementById('fase-grup-container');
-    container.innerHTML = "";
-    let globalCounter = 1;
+/* HEADER BANNER */
+.header-banner {
+    background: linear-gradient(135deg, #131a2e 0%, #0b0f17 100%);
+    border: 1px solid #23314f;
+}
+.header-banner h1 { font-size: 20px; color: #fff; }
 
-    groupsFromApi.forEach((g) => {
-        const hurufGrup = g.name.replace("Group ", "");
-        const daftarTim = g.teams;
-        
-        let htmlGrup = buatKotakGrupHeader(g.name, hurufGrup);
+.player-visual {
+    width: 65px;
+    height: 45px;
+    background-size: cover;
+    background-position: center;
+}
+.mbappe { background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=150&q=80'); }
+.haaland { background-image: url('https://images.unsplash.com/photo-1544698310-74ea9d1c8258?auto=format&fit=crop&w=150&q=80'); }
 
-        g.matches.forEach((m) => {
-            const jamWib = tentukanJamWib(globalCounter);
-            const badgeTvri = dapatkanBadgeTvri(jamWib, globalCounter);
-            
-            htmlGrup += buatBarisPertandinganHTML(globalCounter, m.date, jamWib, m.team1, m.team2, hurufGrup, badgeTvri);
-            
-            listSemuaPertandingan.push({ id: globalCounter, team1: m.team1, team2: m.team2, grup: hurufGrup });
-            globalCounter++;
-        });
+/* ADJUSTMENT STRUKTUR BARIS JADWAL (NAMA NEGARA TIDAK TERPOTONG) */
+.match-row {
+    border-bottom: 1px solid #1e293b;
+    padding: 3px 0;
+}
+.match-time { width: 95px; color: #94a3b8; font-size: 9px; white-space: nowrap; }
 
-        htmlGrup += buatTabelKlasemenFooter(hurufGrup, daftarTim.map(t => t.name || t));
-        container.innerHTML += htmlGrup;
-    });
+/* Distribusi Kolom Tim & Skor Sejajar Sempurna */
+.match-team-left { width: 105px; text-align: right; font-weight: 600; font-size: 11px; white-space: nowrap; overflow: visible; }
+.match-team-right { width: 105px; text-align: left; font-weight: 600; font-size: 11px; white-space: nowrap; overflow: visible; }
+.match-score-box { width: 24px; text-align: center; }
+
+/* Memperkecil Input Skor Agar Proporsional */
+.match-score-box input {
+    width: 100%;
+    height: 18px;
+    font-size: 10px;
+    padding: 0;
+    text-align: center;
+    background-color: #070a12;
+    border: 1px solid #334155;
+    color: #fff;
+    font-weight: bold;
+}
+.match-vs-label { width: 14px; text-align: center; color: #64748b; font-size: 9px; }
+
+/* BADGE STASIUN TELEVISI TVRI */
+.badge-chan { font-size: 8px; font-weight: bold; padding: 1px 4px; border-radius: 2px; min-width: 70px; text-align: center; }
+.bg-simulcast { background-color: #dc2626; color: #fff; }
+.bg-nasional { background-color: #0d6efd; color: #fff; }
+.bg-sport { background-color: #16a34a; color: #fff; }
+
+/* MINI KLASEMEN */
+.mini-table th { background-color: #0b0f17 !important; color: #94a3b8 !important; font-size: 9px; padding: 2px 4px; }
+.mini-table td { font-size: 10px; padding: 2px 4px; border-bottom: 1px solid #1e293b; }
+
+/* STRUKTUR CARD GUGUR */
+.card-knockout { background-color: #131a2e; border: 1px solid #23314f; }
+.ko-header { font-size: 9px; font-weight: bold; background-color: rgba(220, 38, 38, 0.15) !important; color: #f87171 !important; border-bottom: 1px solid #23314f !important; }
+.ko-footer { font-size: 8px; color: #64748b; }
+
+/* EFFEK ANIMASI TRANSISI HIGHLIGHT KICK-OFF */
+.transition-all { transition: all 0.4s ease-in-out; }
+.fase-gugur-active {
+    border: 2px solid #eab308;
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.15);
 }
 
-function tentukanJamWib(id) {
-    const listJam = ["02:00", "05:00", "08:00", "21:00", "23:30"];
-    return listJam[id % listJam.length];
+/* OPTIMASI RESOLUSI CETAK KERTAS A3 */
+@media print {
+    body { background: #fff !important; color: #000 !important; padding: 0; }
+    .action-bar { display: none !important; }
+    .poster-container { width: 420mm; max-width: 100%; border: none; background: #fff !important; color: #000 !important; padding: 0 !important; }
+    .header-banner { background: #f1f5f9 !important; border: 1px solid #000; }
+    .header-banner h1 { color: #000 !important; }
+    .card { background: #fff !important; border: 1px solid #000 !important; page-break-inside: avoid; }
+    .card-header { background: #e2e8f0 !important; color: #000 !important; border-bottom: 1px solid #000 !important; }
+    .match-score-box input { background: #fff !important; color: #000 !important; border: 1px solid #000; }
+    .badge-chan { border: 1px solid #000; color: #000 !important; background: transparent !important; }
+    .mini-table th { background: #e2e8f0 !important; color: #000 !important; }
+    .match-time, .ko-footer { color: #475569 !important; }
 }
-
-function dapatkanBadgeTvri(jam, index) {
-    if (jam === "02:00" || jam === "05:00") {
-        return `<span class="badge badge-simulcast align-self-center ms-auto">SIMULCAST</span>`;
-    }
-    return index % 2 === 0 
-        ? `<span class="badge badge-nasional align-self-center ms-auto">TVRI Nasional</span>` 
-        : `<span class="badge badge-sport align-self-center ms-auto">TVRI Sport</span>`;
-}
-
-// Implementasi Elemen Struktur Grid dan Komponen Card Bootstrap 5
-function buatKotakGrupHeader(namaGrup, huruf) {
-    return `
-        <div class="col-md-6">
-            <div class="card bg-dark bg-opacity-20 border-secondary h-100 shadow-sm">
-                <div class="card-header bg-dark bg-opacity-50 border-secondary d-flex justify-content-between py-2">
-                    <span class="fw-bold text-info small">${namaGrup.toUpperCase()}</span>
-                    <span class="badge bg-secondary text-uppercase align-self-center" style="font-size:9px">Grup</span>
-                </div>
-                <div class="card-body p-2 d-flex flex-column justify-content-between">
-                    <div>`;
-}
-
-function buatBarisPertandinganHTML(id, tgl, jam, t1, t2, grup, badge) {
-    return `
-        <div class="d-flex align-items-center py-1 match-row">
-            <div class="match-time text-truncate">${tgl} - ${jam}</div>
-            <div class="match-team text-end text-truncate">${t1}</div>
-            <div class="match-score-input mx-1"><input type="number" min="0" class="form-control form-control-sm text-center p-0 rounded shadow-sm" id="m-${id}-a" oninput="hitungPoinGrup('${grup}')"></div>
-            <div class="text-muted small px-1">vs</div>
-            <div class="match-score-input mx-1"><input type="number" min="0" class="form-control form-control-sm text-center p-0 rounded shadow-sm" id="m-${id}-b" oninput="hitungPoinGrup('${grup}')"></div>
-            <div class="match-team text-start text-truncate">${t2}</div>
-            ${badge}
-        </div>`;
-}
-
-function buatTabelKlasemenFooter(grup, tims) {
-    let footer = `
-                    </div>
-                    <table class="table table-dark table-striped table-sm mini-table m-0 mt-3 border-secondary">
-                        <thead>
-                            <tr>
-                                <th class="border-secondary py-1 ps-2">Negara</th>
-                                <th class="border-secondary text-center py-1 text-warning" style="width:75px">Poin</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-    tims.forEach(tim => {
-        footer += `
-                            <tr>
-                                <td class="ps-2 align-middle">${tim}</td>
-                                <td class="text-center align-middle fw-bold text-warning" id="pts-${tim.replace(/\s+/g, '')}">0</td>
-                            </tr>`;
-    });
-    footer += `
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>`;
-    return footer;
-}
-
-function hitungPoinGrup(grup) {
-    let pointMap = {};
-
-    listSemuaPertandingan.forEach((match) => {
-        if (match.grup !== grup) return;
-
-        const val1 = parseInt(document.getElementById(`m-${match.id}-a`).value);
-        const val2 = parseInt(document.getElementById(`m-${match.id}-b`).value);
-
-        if (!pointMap[match.team1]) pointMap[match.team1] = 0;
-        if (!pointMap[match.team2]) pointMap[match.team2] = 0;
-
-        if (!isNaN(val1) && !isNaN(val2)) {
-            if (val1 > val2) pointMap[match.team1] += 3;
-            else if (val1 < val2) pointMap[match.team2] += 3;
-            else { pointMap[match.team1] += 1; pointMap[match.team2] += 1; }
-        }
-    });
-
-    for (let tim in pointMap) {
-        const targetId = `pts-${tim.replace(/\s+/g, '')}`;
-        const cell = document.getElementById(targetId);
-        if (cell) cell.innerText = pointMap[tim];
-    }
-}
-
-function renderJadwalDariLokal() {
-    const dataTransform = Object.keys(dataLokalGrup).map(grupLetter => ({
-        name: `Group ${grupLetter}`,
-        teams: dataLokalGrup[grupLetter],
-        matches: [
-            { team1: dataLokalGrup[grupLetter][0], team2: dataLokalGrup[grupLetter][1], date: "12 Juni 2026" },
-            { team1: dataLokalGrup[grupLetter][2], team2: dataLokalGrup[grupLetter][3], date: "13 Juni 2026" },
-            { team1: dataLokalGrup[grupLetter][0], team2: dataLokalGrup[grupLetter][2], date: "17 Juni 2026" },
-            { team1: dataLokalGrup[grupLetter][1], team2: dataLokalGrup[grupLetter][3], date: "18 Juni 2026" }
-        ]
-    }));
-    renderJadwal(dataTransform);
-}
-
-window.onload = muatDataJadwal;
