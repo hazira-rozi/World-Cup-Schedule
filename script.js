@@ -16,31 +16,47 @@ const dataLokalGrup = {
     'L': ['Portugal', 'Kroasia', 'Ukraina', 'Honduras']
 };
 
-// Konstruksi Struktur Data Lengkap Fase Gugur dari Babak 32 Besar Hingga Final Grand
+// Konstruksi Struktur Data Lengkap Fase Gugur dari Babak 32 Besar Hingga Final
 const dataFaseGugur = [
-    { babak: "R32 - MATCH 73", t1: "Juara Grup A", t2: "Peringkat 3 C/D", tgl: "28 Jun", jam: "02:00" },
-    { babak: "R32 - MATCH 74", t1: "Juara Grup B", t2: "Runner-up Grup F", tgl: "28 Jun", jam: "08:00" },
-    { babak: "R32 - MATCH 75", t1: "Juara Grup C", t2: "Peringkat 3 A/B", tgl: "29 Jun", jam: "05:00" },
-    { babak: "R32 - MATCH 76", t1: "Juara Grup D", t2: "Runner-up Grup E", tgl: "29 Jun", jam: "21:00" },
+    { babak: "R32 - MATCH 73", t1: "Juara Grup A", t2: "Peringkat 3 C/D", tgl: "2026-06-28", jam: "02:00" },
+    { babak: "R32 - MATCH 74", t1: "Juara Grup B", t2: "Runner-up Grup F", tgl: "2026-06-28", jam: "08:00" },
+    { babak: "R32 - MATCH 75", t1: "Juara Grup C", t2: "Peringkat 3 A/B", tgl: "2026-06-29", jam: "05:00" },
+    { babak: "R32 - MATCH 76", t1: "Juara Grup D", t2: "Runner-up Grup E", tgl: "2026-06-29", jam: "21:00" },
     
-    { babak: "R16 - MATCH 89", t1: "Pemenang M73", t2: "Pemenang M74", tgl: "04 Jul", jam: "02:00" },
-    { babak: "R16 - MATCH 90", t1: "Pemenang M75", t2: "Pemenang M76", tgl: "04 Jul", jam: "05:00" },
-    { babak: "R16 - MATCH 91", t1: "Pemenang M77", t2: "Pemenang M78", tgl: "05 Jul", jam: "02:00" },
-    { babak: "R16 - MATCH 92", t1: "Pemenang M79", t2: "Pemenang M80", tgl: "05 Jul", jam: "21:00" },
+    { babak: "R16 - MATCH 89", t1: "Pemenang M73", t2: "Pemenang M74", tgl: "2026-07-04", jam: "02:00" },
+    { babak: "R16 - MATCH 90", t1: "Pemenang M75", t2: "Pemenang M76", tgl: "2026-07-04", jam: "05:00" },
+    { babak: "R16 - MATCH 91", t1: "Pemenang M77", t2: "Pemenang M78", tgl: "2026-07-05", jam: "02:00" },
+    { babak: "R16 - MATCH 92", t1: "Pemenang M79", t2: "Pemenang M80", tgl: "2026-07-05", jam: "21:00" },
     
-    { babak: "QUARTER FINAL - M97", t1: "Pemenang M89", t2: "Pemenang M90", tgl: "10 Jul", jam: "02:00" },
-    { babak: "QUARTER FINAL - M98", t1: "Pemenang M91", t2: "Pemenang M92", tgl: "10 Jul", jam: "08:00" },
-    { babak: "QUARTER FINAL - M99", t1: "Pemenang M93", t2: "Pemenang M94", tgl: "11 Jul", jam: "05:00" },
-    { babak: "QUARTER FINAL - M100", t1: "Pemenang M95", t2: "Pemenang M96", tgl: "11 Jul", jam: "21:00" },
+    { babak: "QUARTER FINAL - M97", t1: "Pemenang M89", t2: "Pemenang M90", tgl: "2026-07-10", jam: "02:00" },
+    { babak: "QUARTER FINAL - M98", t1: "Pemenang M91", t2: "Pemenang M92", tgl: "2026-07-10", jam: "08:00" },
+    { babak: "QUARTER FINAL - M99", t1: "Pemenang M93", t2: "Pemenang M94", tgl: "2026-07-11", jam: "05:00" },
+    { babak: "QUARTER FINAL - M100", t1: "Pemenang M95", t2: "Pemenang M96", tgl: "2026-07-11", jam: "21:00" },
     
-    { babak: "SEMI FINAL - M101", t1: "Pemenang M97", t2: "Pemenang M98", tgl: "15 Jul", jam: "02:00" },
-    { babak: "SEMI FINAL - M102", t1: "Pemenang M99", t2: "Pemenang M100", tgl: "16 Jul", jam: "02:00" },
+    { babak: "SEMI FINAL - M101", t1: "Pemenang M97", t2: "Pemenang M98", tgl: "2026-07-15", jam: "02:00" },
+    { babak: "SEMI FINAL - M102", t1: "Pemenang M99", t2: "Pemenang M100", tgl: "2026-07-16", jam: "02:00" },
     
-    { babak: "BRONZE FINAL (PLACE 3)", t1: "Kalah M101", t2: "Kalah M102", tgl: "18 Jul", jam: "05:00" },
-    { babak: "WORLD CUP FINAL", t1: "Pemenang M101", t2: "Pemenang M102", tgl: "19 Jul", jam: "02:00" }
+    { babak: "BRONZE FINAL (PLACE 3)", t1: "Kalah M101", t2: "Kalah M102", tgl: "2026-07-18", jam: "05:00" },
+    { babak: "WORLD CUP FINAL", t1: "Pemenang M101", t2: "Pemenang M102", tgl: "2026-07-19", jam: "02:00" }
 ];
 
 let listSemuaPertandingan = [];
+
+// KONVERSI WAKTU DINAMIS: Mengonversi waktu standar WIB/WIB asli ke zona waktu lokal gawai
+function konversiKeWaktuPerangkat(tglString, jamWibString) {
+    const tautanWaktuWib = `${tglString}T${jamWibString}:00+07:00`;
+    const targetWaktu = new Date(tautanWaktuWib);
+
+    const namaZonaLokal = targetWaktu.toLocaleDateString('id-ID', { timeZoneName: 'short' }).split(' ').pop();
+    
+    const labelZona = document.getElementById('label-zona-waktu');
+    if (labelZona) labelZona.innerText = namaZonaLokal;
+
+    const jamHasil = targetWaktu.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const tglHasil = targetWaktu.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+
+    return { tanggal: tglHasil, jam: jamHasil };
+}
 
 async function inisialisasiTracker() {
     try {
@@ -66,12 +82,15 @@ function renderFaseGrup(groupsFromApi) {
         let html = buatCardGrupHeader(g.name);
 
         g.matches.forEach((m) => {
-            const jam = tentukanJamWib(matchId);
-            const badgeTv = dapatkanKanalTvri(jam, matchId);
+            const jamWibAsli = tentukanJamWibMentah(matchId);
+            const tglMentah = m.date ? "2026-06-" + m.date.match(/\d+/)[0] : "2026-06-12"; 
+            const waktuLokal = konversiKeWaktuPerangkat(tglMentah, jamWibAsli);
+
+            const badgeTv = dapatkanKanalTvri(jamWibAsli, matchId);
             
             html += `
                 <tr>
-                    <td class="col-tgl">${m.date || "12 Jun"} - ${jam}</td>
+                    <td class="col-tgl">${waktuLokal.tanggal} - ${waktuLokal.jam}</td>
                     <td class="col-match text-truncate">${m.team1} vs ${m.team2}</td>
                     <td class="col-skor">
                         <div class="skor-container">
@@ -96,13 +115,15 @@ function renderFaseGugurKomplit() {
     container.innerHTML = "";
     
     dataFaseGugur.forEach((ko, index) => {
+        const waktuLokal = konversiKeWaktuPerangkat(ko.tgl, ko.jam);
         const badgeTv = dapatkanKanalTvri(ko.jam, index);
+
         const htmlNode = `
             <div class="col-sm-6 col-md-4 col-xl-3">
                 <div class="card card-ko h-100 shadow-sm">
                     <div class="card-header ko-title py-1 px-2 d-flex justify-content-between align-items-center">
                         <span>${ko.babak}</span>
-                        <span>${ko.tgl} - ${ko.jam} WIB</span>
+                        <span>${waktuLokal.tanggal} - ${waktuLokal.jam}</span>
                     </div>
                     <div class="card-body p-2">
                         <table class="table table-dark table-ko">
@@ -123,13 +144,13 @@ function renderFaseGugurKomplit() {
     });
 }
 
-function tentukanJamWib(id) {
+function tentukanJamWibMentah(id) {
     const listJam = ["02:00", "05:00", "08:00", "21:00", "23:30"];
     return listJam[id % listJam.length];
 }
 
-function dapatkanKanalTvri(jam, index) {
-    if (jam === "02:00" || jam === "05:00") {
+function dapatkanKanalTvri(jamAsliWib, index) {
+    if (jamAsliWib === "02:00" || jamAsliWib === "05:00") {
         return `<span class="badge-tv chan-simulcast">SIMULCAST</span>`;
     }
     return index % 2 === 0 
